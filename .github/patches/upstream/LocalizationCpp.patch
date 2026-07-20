@@ -9,7 +9,7 @@ index eaf21909e4..e741783bbb 100644
 -      m.mValue = entry.message.value;
 +      nsCString value;
 +      value.Assign(entry.message.value);
-+      value.ReplaceSubstring("Firefox"_ns, "Floorp"_ns);
++      value.ReplaceSubstring("Firefox"_ns, "Derp"_ns);
 +      value.ReplaceSubstring("Mozilla"_ns, "Ablaze"_ns);
 +      m.mValue = value;
      }
@@ -21,7 +21,7 @@ index eaf21909e4..e741783bbb 100644
 +      for (auto& attr : value) {
 +        nsCString attrValue;
 +        attrValue.Assign(attr.mValue);
-+        attrValue.ReplaceSubstring("Firefox"_ns, "Floorp"_ns);
++        attrValue.ReplaceSubstring("Firefox"_ns, "Derp"_ns);
 +        attrValue.ReplaceSubstring("Mozilla"_ns, "Ablaze"_ns);
 +        attr.mValue = attrValue;
 +      }
@@ -35,7 +35,7 @@ index eaf21909e4..e741783bbb 100644
 -          promise->MaybeResolve(aValue);
 +          nsCString value;
 +          value.Assign(*aValue);
-+          value.ReplaceSubstring("Firefox"_ns, "Floorp"_ns);
++          value.ReplaceSubstring("Firefox"_ns, "Derp"_ns);
 +          value.ReplaceSubstring("Mozilla"_ns, "Ablaze"_ns);
 +          promise->MaybeResolve(value);
          }
@@ -52,7 +52,7 @@ index eaf21909e4..e741783bbb 100644
 +          for (const auto& value : *aValues) {
 +            nsCString modifiedValue;
 +            modifiedValue.Assign(value);
-+            modifiedValue.ReplaceSubstring("Firefox"_ns, "Floorp"_ns);
++            modifiedValue.ReplaceSubstring("Firefox"_ns, "Derp"_ns);
 +            modifiedValue.ReplaceSubstring("Mozilla"_ns, "Ablaze"_ns);
 +            modifiedValues.AppendElement(modifiedValue);
 +          }
@@ -65,7 +65,7 @@ index eaf21909e4..e741783bbb 100644
                                                  &aRetVal, &errors);
  
    if (rv) {
-+    aRetVal.ReplaceSubstring("Firefox"_ns, "Floorp"_ns);
++    aRetVal.ReplaceSubstring("Firefox"_ns, "Derp"_ns);
 +    aRetVal.ReplaceSubstring("Mozilla"_ns, "Ablaze"_ns);
      MaybeReportErrorsToGecko(errors, aRv, GetParentObject());
    } else {
@@ -75,7 +75,7 @@ index eaf21909e4..e741783bbb 100644
  
    if (rv) {
 +    for (auto& value : aRetVal) {
-+      value.ReplaceSubstring("Firefox"_ns, "Floorp"_ns);
++      value.ReplaceSubstring("Firefox"_ns, "Derp"_ns);
 +      value.ReplaceSubstring("Mozilla"_ns, "Ablaze"_ns);
 +    }
      MaybeReportErrorsToGecko(errors, aRv, GetParentObject());
