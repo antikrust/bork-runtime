@@ -419,3 +419,11 @@ CLAUDE.local.md
 # Ignore .json.gz (typically profiles) in the root directory
 # lint-ignore-next-line: git-only
 /*.json.gz
+
+# derp: keep internal design/audit docs and local infra config out of this
+# public repo (preemptive — none are tracked today).
+# lint-ignore-next-line: git-only
+/*-AUDIT.md
+# lint-ignore-next-line: git-only
+/*-PLAN.md
+hosts.env
