@@ -3,5 +3,5 @@
 -brand-shortcut-name = Derp
 -brand-full-name = Derp Browser
 -brand-product-name = Derp
--vendor-short-name = Ablaze
+-vendor-short-name = Derp
 trademarkInfo = { " " }

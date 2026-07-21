@@ -7,7 +7,7 @@ index 8896231786..d21bd8338f 100644
      fn from(input: FluentL10nMessage) -> Self {
          let value = if let Some(value) = input.value {
 -            value.to_string().into()
-+            let modified_value = value.to_string().replace("Firefox", "Derp").replace("Mozilla", "Ablaze");
++            let modified_value = value.to_string().replace("Firefox", "Derp").replace("Mozilla", "Derp");
 +            modified_value.into()
          } else {
              let mut s = nsCString::new();
@@ -16,7 +16,7 @@ index 8896231786..d21bd8338f 100644
          };
 +
 +        let attributes = input.attributes.into_iter().map(|attr| {
-+            let modified_attr_value = attr.value.replace("Firefox", "Derp").replace("Mozilla", "Ablaze");
++            let modified_attr_value = attr.value.replace("Firefox", "Derp").replace("Mozilla", "Derp");
 +            FluentL10nAttribute {
 +                name: attr.name,
 +                value: modified_attr_value.into(),
@@ -35,7 +35,7 @@ index 8896231786..d21bd8338f 100644
          ) {
              if let Some(value) = value {
 -                ret_val.assign(&value);
-+                let modified_value = value.replace("Firefox", "Derp").replace("Mozilla", "Ablaze");
++                let modified_value = value.replace("Firefox", "Derp").replace("Mozilla", "Derp");
 +                ret_val.assign(&modified_value);
              } else {
                  ret_val.set_is_void(true);
@@ -45,7 +45,7 @@ index 8896231786..d21bd8338f 100644
              for value in values.iter() {
                  if let Some(value) = value {
 -                    ret_val.push(value.as_ref().into());
-+                    let modified_value = value.replace("Firefox", "Derp").replace("Mozilla", "Ablaze");
++                    let modified_value = value.replace("Firefox", "Derp").replace("Mozilla", "Derp");
 +                    ret_val.push(modified_value.into());
                  } else {
                      let mut void_string = nsCString::new();
@@ -55,7 +55,7 @@ index 8896231786..d21bd8338f 100644
                  .await
              {
 -                let v: nsCString = value.to_string().into();
-+                let modified_value = value.replace("Firefox", "Derp").replace("Mozilla", "Ablaze");
++                let modified_value = value.replace("Firefox", "Derp").replace("Mozilla", "Derp");
 +                let v: nsCString = modified_value.to_string().into();
                  v
              } else {
@@ -65,7 +65,7 @@ index 8896231786..d21bd8338f 100644
                  .map(|value| {
                      if let Some(value) = value {
 -                        nsCString::from(value.as_ref())
-+                        let modified_value = value.replace("Firefox", "Derp").replace("Mozilla", "Ablaze");
++                        let modified_value = value.replace("Firefox", "Derp").replace("Mozilla", "Derp");
 +                        nsCString::from(&modified_value)
                      } else {
                          let mut v = nsCString::new();
