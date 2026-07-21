@@ -2397,27 +2397,34 @@ static void CacheSandboxParams(std::vector<std::string>& aCachedParams) {
 
   // TESTING_READ_PATH3, TESTING_READ_PATH4. In non-packaged builds,
   // these are used to whitelist the repo dir and object dir respectively.
+  //
+  // derp: IsPackagedBuild() keys off the presence of omni.ja, and derp ships
+  // flat chrome (--enable-chrome-format=flat) — so an installed derp looks
+  // like a developer build here despite being a packaged app. A real dev
+  // build launched via mach carries MozDeveloperRepoPath/MozDeveloperObjPath
+  // in its Info.plist; an installed flat build does not, and the upstream
+  // MOZ_CRASH on that lookup took down the browser on the first sandboxed
+  // content-process launch. Skip the testing paths instead — they only exist
+  // to let dev builds read their build tree.
   nsresult rv;
   if (!mozilla::IsPackagedBuild()) {
     // Repo dir
     nsCOMPtr<nsIFile> repoDir;
     rv = nsMacUtilsImpl::GetRepoDir(getter_AddRefs(repoDir));
-    if (NS_FAILED(rv)) {
-      MOZ_CRASH("Failed to get path to repo dir");
+    if (NS_SUCCEEDED(rv) && repoDir) {
+      nsCString repoDirPath;
+      (void)repoDir->GetNativePath(repoDirPath);
+      info.testingReadPath3 = repoDirPath.get();
     }
-    nsCString repoDirPath;
-    (void)repoDir->GetNativePath(repoDirPath);
-    info.testingReadPath3 = repoDirPath.get();
 
     // Object dir
     nsCOMPtr<nsIFile> objDir;
     rv = nsMacUtilsImpl::GetObjDir(getter_AddRefs(objDir));
-    if (NS_FAILED(rv)) {
-      MOZ_CRASH("Failed to get path to build object dir");
+    if (NS_SUCCEEDED(rv) && objDir) {
+      nsCString objDirPath;
+      (void)objDir->GetNativePath(objDirPath);
+      info.testingReadPath4 = objDirPath.get();
     }
-    nsCString objDirPath;
-    (void)objDir->GetNativePath(objDirPath);
-    info.testingReadPath4 = objDirPath.get();
   }
 
   // DEBUG_WRITE_DIR
