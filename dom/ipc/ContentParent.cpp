@@ -2398,8 +2398,8 @@ static void CacheSandboxParams(std::vector<std::string>& aCachedParams) {
   // TESTING_READ_PATH3, TESTING_READ_PATH4. In non-packaged builds,
   // these are used to whitelist the repo dir and object dir respectively.
   //
-  // derp: IsPackagedBuild() keys off the presence of omni.ja, and derp ships
-  // flat chrome (--enable-chrome-format=flat) — so an installed derp looks
+  // bork: IsPackagedBuild() keys off the presence of omni.ja, and bork ships
+  // flat chrome (--enable-chrome-format=flat) — so an installed bork looks
   // like a developer build here despite being a packaged app. A real dev
   // build launched via mach carries MozDeveloperRepoPath/MozDeveloperObjPath
   // in its Info.plist; an installed flat build does not, and the upstream

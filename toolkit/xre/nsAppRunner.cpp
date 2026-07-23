@@ -267,6 +267,18 @@
 #  include "DBusService.h"
 #endif
 
+/*
+ * NORANEKO PATCH
+ * [updater]
+ * START
+ */
+#include "mozilla/URLPreloader.h"
+/*
+ * NORANEKO PATCH
+ * [updater]
+ * END
+ */
+
 extern void InstallSignalHandlers(const char* ProgramName);
 
 #define FILE_COMPATIBILITY_INFO "compatibility.ini"_ns
@@ -3633,6 +3645,51 @@ static bool CheckCompatibility(nsIFile* aProfileDir, const nsCString& aVersion,
     rv = lf->Equals(aAppDir, &eq);
     if (NS_FAILED(rv) || !eq) return false;
   }
+
+  /*
+   * NORANEKO PATCH
+   * [updater]
+   * START
+   */
+  {
+    auto _NRReadString = [](nsIFile* aFile, nsACString& buildid) -> nsresult {
+      nsCString tmp = MOZ_TRY(URLPreloader::ReadFile(aFile));
+      buildid = tmp;
+      return NS_OK;
+    };
+    nsCOMPtr<nsIFile> buildid2_profile;
+    aProfileDir->Clone(getter_AddRefs(buildid2_profile));
+    if (!buildid2_profile) return false;
+    buildid2_profile->AppendNative("buildid2"_ns);
+
+    nsCString buildid2_profile_string;
+    rv = _NRReadString(buildid2_profile, buildid2_profile_string);
+    if (NS_FAILED(rv)) {
+      return false;
+    }
+
+    if (aAppDir) {
+      nsCOMPtr<nsIFile> buildid2_appDir;
+      aAppDir->Clone(getter_AddRefs(buildid2_appDir));
+      if (!buildid2_appDir) return false;
+      buildid2_appDir->AppendNative("buildid2"_ns);
+
+      nsCString buildid2_appDir_string;
+      rv = _NRReadString(buildid2_appDir, buildid2_appDir_string);
+      if (NS_FAILED(rv)) {
+        return false;
+      }
+
+      if (!buildid2_profile_string.Equals(buildid2_appDir_string)) {
+        return false;
+      }
+    }
+  }
+  /*
+   * NORANEKO PATCH
+   * [updater]
+   * END
+   */
 
   // If we see this flag, caches are invalid.
   rv = parser.GetString("Compatibility", "InvalidateCaches", buf);

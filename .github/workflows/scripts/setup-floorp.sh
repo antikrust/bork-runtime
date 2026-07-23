@@ -66,11 +66,11 @@ if [[ -d ".github/assets/branding" ]]; then
   # Select branding based on debug mode
   if [[ "$DEBUG" == "true" ]]; then
     # Debug mode: use unofficial branding
-    BRANDING="browser/branding/derp"
+    BRANDING="browser/branding/bork"
     echo "Using debug branding: floorp-daylight"
   else
     # Release mode: use official branding
-    BRANDING="browser/branding/derp"
+    BRANDING="browser/branding/bork"
     echo "Using official branding: floorp-official"
   fi
 

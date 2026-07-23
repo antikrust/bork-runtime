@@ -76,8 +76,8 @@ static nsTArray<ffi::L10nKey> ConvertFromL10nKeys(
     if (!entry.message.value.IsVoid()) {
       nsCString value;
       value.Assign(entry.message.value);
-      value.ReplaceSubstring("Firefox"_ns, "Derp"_ns);
-      value.ReplaceSubstring("Mozilla"_ns, "Derp"_ns);
+      value.ReplaceSubstring("Firefox"_ns, "Bork"_ns);
+      value.ReplaceSubstring("Mozilla"_ns, "Bork"_ns);
       m.mValue = value;
     }
     if (!entry.message.attributes.IsEmpty()) {
@@ -88,8 +88,8 @@ static nsTArray<ffi::L10nKey> ConvertFromL10nKeys(
       for (auto& attr : value) {
         nsCString attrValue;
         attrValue.Assign(attr.mValue);
-        attrValue.ReplaceSubstring("Firefox"_ns, "Derp"_ns);
-        attrValue.ReplaceSubstring("Mozilla"_ns, "Derp"_ns);
+        attrValue.ReplaceSubstring("Firefox"_ns, "Bork"_ns);
+        attrValue.ReplaceSubstring("Mozilla"_ns, "Bork"_ns);
         attr.mValue = attrValue;
       }
     }
@@ -320,8 +320,8 @@ already_AddRefed<Promise> Localization::FormatValue(
         } else {
           nsCString value;
           value.Assign(*aValue);
-          value.ReplaceSubstring("Firefox"_ns, "Derp"_ns);
-          value.ReplaceSubstring("Mozilla"_ns, "Derp"_ns);
+          value.ReplaceSubstring("Firefox"_ns, "Bork"_ns);
+          value.ReplaceSubstring("Mozilla"_ns, "Bork"_ns);
           promise->MaybeResolve(value);
         }
       });
@@ -357,8 +357,8 @@ already_AddRefed<Promise> Localization::FormatValues(
           for (const auto& value : *aValues) {
             nsCString modifiedValue;
             modifiedValue.Assign(value);
-            modifiedValue.ReplaceSubstring("Firefox"_ns, "Derp"_ns);
-            modifiedValue.ReplaceSubstring("Mozilla"_ns, "Derp"_ns);
+            modifiedValue.ReplaceSubstring("Firefox"_ns, "Bork"_ns);
+            modifiedValue.ReplaceSubstring("Mozilla"_ns, "Bork"_ns);
             modifiedValues.AppendElement(modifiedValue);
           }
 
@@ -419,8 +419,8 @@ void Localization::FormatValueSync(const nsACString& aId,
                                                 &aRetVal, &errors);
 
   if (rv) {
-    aRetVal.ReplaceSubstring("Firefox"_ns, "Derp"_ns);
-    aRetVal.ReplaceSubstring("Mozilla"_ns, "Derp"_ns);
+    aRetVal.ReplaceSubstring("Firefox"_ns, "Bork"_ns);
+    aRetVal.ReplaceSubstring("Mozilla"_ns, "Bork"_ns);
     MaybeReportErrorsToGecko(errors, aRv, GetParentObject());
   } else {
     aRv.ThrowInvalidStateError(
@@ -456,8 +456,8 @@ void Localization::FormatValuesSync(
 
   if (rv) {
     for (auto& value : aRetVal) {
-      value.ReplaceSubstring("Firefox"_ns, "Derp"_ns);
-      value.ReplaceSubstring("Mozilla"_ns, "Derp"_ns);
+      value.ReplaceSubstring("Firefox"_ns, "Bork"_ns);
+      value.ReplaceSubstring("Mozilla"_ns, "Bork"_ns);
     }
     MaybeReportErrorsToGecko(errors, aRv, GetParentObject());
   } else {

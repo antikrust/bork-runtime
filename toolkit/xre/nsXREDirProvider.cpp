@@ -1578,10 +1578,10 @@ nsresult nsXREDirProvider::AppendProfilePath(nsIFile* aFile, bool aLocal) {
   if (!profile.IsEmpty()) {
     rv = AppendProfileString(aFile, profile.get());
   } else {
-    if (!vendor.IsEmpty()) {
-      rv = aFile->AppendNative(vendor);
-      NS_ENSURE_SUCCESS(rv, rv);
-    }
+    // if (!vendor.IsEmpty()) {
+    //   rv = aFile->AppendNative(vendor);
+    //   NS_ENSURE_SUCCESS(rv, rv);
+    // }
     rv = aFile->AppendNative(appName);
   }
   NS_ENSURE_SUCCESS(rv, rv);

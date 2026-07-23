@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MPL-2.0
 
-ac_add_options --with-app-name=derp
-ac_add_options --with-app-basename=Derp
+ac_add_options --with-app-name=bork
+ac_add_options --with-app-basename=Bork
 ac_add_options --disable-maintenance-service
 # ac_add_options --disable-updater
 ## this implies disable geckodriver, and puppeteer seems using the geckodriver impl.

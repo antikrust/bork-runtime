@@ -2,8 +2,5 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-brandShorterName=Derp
-brandShortName=Derp
-brandFullName=Derp Browser
-vendorShortName=Derp
-syncBrandShortName=Sync
+MOZ_APP_DISPLAYNAME="Bork"
+MOZ_MACBUNDLE_ID=bork
