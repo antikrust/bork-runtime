@@ -3439,7 +3439,12 @@ EventStateManager::ComputeScrollTargetAndMayAdjustWheelEvent(
     if (lastScrollFrame) {
       ScrollContainerFrame* scrollContainerFrame =
           lastScrollFrame->GetScrollTargetFrame();
-      if (scrollContainerFrame) {
+      // bork: only honor the transaction for events it can actually consume
+      // (dominant axis must be scrollable on the latched target). Returning
+      // it unconditionally sent vertical deltas to horizontal-only boxes,
+      // where they died instead of scrolling the page under the pointer.
+      // On mismatch, fall through to the position-based walk below.
+      if (scrollContainerFrame && WheelTransaction::CanRouteEvent(aEvent)) {
         if (isAutoDir) {
           ESMAutoDirWheelDeltaAdjuster adjuster(*aEvent, *lastScrollFrame,
                                                 honoursRoot);
