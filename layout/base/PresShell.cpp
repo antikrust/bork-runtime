@@ -12801,6 +12801,22 @@ void PresShell::EventHandler::EventTargetData::UpdateWheelEventTarget(
     return;
   }
 
+  // bork: the transaction is process-global state, so two staleness checks
+  // before honoring it. (1) A hidden tab keeps its frames alive, and a
+  // chrome-side tab switch is invisible to the transaction machinery — the
+  // stored target can point into the previous tab's document, which would
+  // route every wheel event at a page the user is no longer looking at.
+  // (2) An event whose dominant axis the latched scroller cannot scroll
+  // must not be routed at it — that is how a horizontal-only carousel or
+  // code block swallowed vertical page scrolling wholesale. Either way the
+  // transaction is not describing what the user is doing: end it and let
+  // the event target by position.
+  if (groupFrame->PresShell() != mPresShell ||
+      !WheelTransaction::CanRouteEvent(aGUIEvent->AsWheelEvent())) {
+    WheelTransaction::EndTransaction();
+    return;
+  }
+
   // If we have a stored event target from the wheel transaction, override
   // the event target.
   SetFrameAndComputePresShellAndContent(groupFrame, aGUIEvent);

@@ -132,6 +132,16 @@ class WheelTransaction {
    */
   static nsIFrame* GetEventTargetFrame() { return sEventTargetFrame; }
   static bool HandledByApz() { return sHandledByApz; }
+  /**
+   * bork: whether the live transaction may own aEvent. True only when the
+   * transaction's scroll frame can scroll along the event's dominant axis.
+   * Without this check the transaction routes events at the latched target
+   * unconditionally, so a horizontal-only scroller (a carousel, a code
+   * block) that was touched within the last 1.5s swallows vertical page
+   * scrolling — and keeps swallowing it while diagonal deltas renew the
+   * transaction.
+   */
+  static bool CanRouteEvent(const WidgetWheelEvent* aEvent);
   static void EndTransaction();
   /**
    * WillHandleDefaultAction() is called before handling aWheelEvent on

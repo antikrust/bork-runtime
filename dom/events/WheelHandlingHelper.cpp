@@ -202,6 +202,39 @@ bool WheelTransaction::UpdateTransaction(const WidgetWheelEvent* aEvent) {
 }
 
 /* static */
+bool WheelTransaction::CanRouteEvent(const WidgetWheelEvent* aEvent) {
+  if (!aEvent) {
+    return false;
+  }
+  nsIFrame* frame = GetScrollTargetFrame();
+  if (!frame) {
+    return false;
+  }
+  ScrollContainerFrame* scrollContainerFrame = frame->GetScrollTargetFrame();
+  if (!scrollContainerFrame) {
+    return false;
+  }
+  double dx = aEvent->mDeltaX;
+  double dy = aEvent->mDeltaY;
+  if (dx == 0.0 && dy == 0.0) {
+    return true;
+  }
+  // Judge by the dominant axis only: a diagonal gesture aimed at the page
+  // must not stay latched to a horizontal-only box just because its minor
+  // deltaX component could crawl the box sideways. Axis capability, not
+  // remaining range, so a scroller sitting at one end still keeps its
+  // transaction (ending it there would introduce mid-gesture handoff).
+  double absDx = dx < 0 ? -dx : dx;
+  double absDy = dy < 0 ? -dy : dy;
+  layers::ScrollDirections directions =
+      scrollContainerFrame->GetAvailableScrollingDirectionsForUserInputEvents();
+  if (absDy > absDx) {
+    return directions.contains(layers::ScrollDirection::eVertical);
+  }
+  return directions.contains(layers::ScrollDirection::eHorizontal);
+}
+
+/* static */
 void WheelTransaction::MayEndTransaction() {
   if (!sOwnScrollbars && ScrollbarsForWheel::IsActive()) {
     ScrollbarsForWheel::OwnWheelTransaction(true);
